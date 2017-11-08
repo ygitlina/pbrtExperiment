@@ -64,8 +64,10 @@
 #include "integrators/igi.h"
 #include "integrators/irradiancecache.h"
 #include "integrators/path.h"
+#include "integrators/pbdsubsurface.h"
 #include "integrators/photonmap.h"
 #include "integrators/single.h"
+#include "integrators/skinsubsurface.h"
 #include "integrators/useprobes.h"
 #include "integrators/whitted.h"
 #include "lights/diffuse.h"
@@ -83,6 +85,9 @@
 #include "materials/mirror.h"
 #include "materials/mixmat.h"
 #include "materials/plastic.h"
+#include "materials/skin.h"
+#include "materials/skindj.h"
+#include "materials/skinsubsurface.h"
 #include "materials/substrate.h"
 #include "materials/subsurface.h"
 #include "materials/shinymetal.h"
@@ -395,8 +400,14 @@ Reference<Material> MakeMaterial(const string &name,
         material = CreateSubstrateMaterial(mtl2world, mp);
     else if (name == "uber")
         material = CreateUberMaterial(mtl2world, mp);
+    else if (name == "skin")
+        material = CreateSkinMaterial(mtl2world, mp);
+    else if (name == "skindj")
+        material = CreateSkinDJMaterial(mtl2world, mp);
     else if (name == "subsurface")
         material = CreateSubsurfaceMaterial(mtl2world, mp);
+    else if (name == "skinsubsurface")
+        material = CreateSkinSubsurfaceMaterial(mtl2world, mp);
     else if (name == "kdsubsurface")
         material = CreateKdSubsurfaceMaterial(mtl2world, mp);
     else if (name == "measured")
@@ -547,6 +558,10 @@ SurfaceIntegrator *MakeSurfaceIntegrator(const string &name,
         si = CreateIGISurfaceIntegrator(paramSet);
     else if (name == "dipolesubsurface")
         si = CreateDipoleSubsurfaceIntegrator(paramSet);
+    else if (name == "pbdsubsurface")
+        si = CreatePBDSubsurfaceIntegrator(paramSet);
+    else if (name == "skinsubsurface")
+        si = CreateSkinSubsurfaceIntegrator(paramSet);
     else if (name == "ambientocclusion")
         si = CreateAmbientOcclusionIntegrator(paramSet);
     else if (name == "useprobes")

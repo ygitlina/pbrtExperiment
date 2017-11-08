@@ -1,0 +1,69 @@
+Scale -1 1 1
+LookAt 0 0 0   0 -5 8   0 1 0
+#LookAt 1 1 10    0 0 -1   0 1 0
+Camera "perspective" "float fov" [25]
+
+Sampler "lowdiscrepancy" "integer pixelsamples" [16]
+PixelFilter "box"
+
+Film "image" "integer xresolution" [1600] "integer yresolution" [1600] "string filename" ["skin.exr"]
+
+# DJ2006 skin models
+# Need to use small minsampledistance to prevent a "blotchy" look on skin.
+SurfaceIntegrator "skinsubsurface" "float minsampledistance" [.15] "float maxerror" [.15] "float Cm" [0.005] "float Bm" [0.7] "float Ch" [0.005] "float rho" [0.3] #white
+#SurfaceIntegrator "skinsubsurface" "float minsampledistance" [.02] "float maxerror" [.15] "float Cm" [0.15] "float Bm" [0.0] "float Ch" [0.01] "float rho" [0.3] #asian
+SurfaceIntegrator "skinsubsurface" "float minsampledistance" [.01] "float maxerror" [.15] "float Cm" [0.50] "float Bm" [0.7] "float Ch" [0.05] "float rho" [0.1] #black
+
+WorldBegin
+
+# lights
+AttributeBegin
+    LightSource "distant" "integer nsamples" [32] "color L" [1 1 1] "point from" [0 1 0] "point to" [0 .8 1]
+    LightSource "distant" "integer nsamples" [32] "color L" [1 1 1] "point from" [1 1 0] "point to" [-1 .8 1]
+    LightSource "distant" "integer nsamples" [32] "color L" [1 1 1] "point from" [-1 1 0] "point to" [1 .8 1]
+    LightSource "distant" "integer nsamples" [32] "color L" [1 1 1] "point from" [0 0 1] "point to" [0 1 0]
+    LightSource "distant" "integer nsamples" [32] "color L" [1 1 1] "point from" [0 0 0] "point to" [2 0 1]
+    LightSource "distant" "integer nsamples" [32] "color L" [1 1 1] "point from" [0 0 0] "point to" [0 -1 1]
+    LightSource "distant" "integer nsamples" [32] "color L" [1 1 1] "point from" [0 0 0] "point to" [0 0 1]
+    LightSource "point" "color I" [50.0 50.0 50.0] "point from" [-4 -5 4]
+    LightSource "infinite" "integer nsamples" [32] "color L" [0.5 0.5 0.5]
+AttributeEnd
+
+#floor
+#AttributeBegin
+#Texture "tmap" "color" "imagemap" "string filename" "textures/lines.exr"
+#	"float uscale" 6 "float vscale" 6
+#Texture "tbump-tex" "float" "imagemap" "string filename" "textures/lines.exr"
+#	"float uscale" 6 "float vscale" 6
+#Texture "sbump" "float" "scale" "texture tex1" "tbump-tex"
+#	"float  tex2" [-.25]
+#Material "substrate" "texture Kd" "tmap" 
+#	 "color Ks" [.5 .5 .5] "float uroughness" [.05]
+#	"float vroughness" [.05]
+#	"texture bumpmap" "sbump" 
+#Translate 15 0 10
+#Shape "trianglemesh" "integer indices" [0 1 2 0 3 2 ]
+#    "point P" [ -10 0 -10  10 0 -10   10 0 10   -10 0 10 ]
+#AttributeEnd
+
+AttributeBegin
+#Material "subsurface" "color sigma_a" [ .05 .05 .05] "color sigma_prime_s" [3 3 3]
+#Material "kdsubsurface" "color Kd" [ .2 .5 .7 ] "float meanfreepath" [.1]
+#Texture "obj-kd" "color" "constant" "color value" [0.50000 0.00000 0.00000]
+#Material "uber" "texture Kd" "obj-kd" "texture Ks" "obj-ks" "float roughness" [0.010408] "rgb Kt" [0.000000 0.000000 0.000000] "float index" [1.000000] "rgb opacity" [0.5 0.5 0.5] 
+#Material "subsurface" "color sigma_a" [ .02 .07 .07] "color sigma_prime_s" [6 5 4.5]
+#Material "subsurface" "color sigma_a" [ 0 1 .988] "color sigma_prime_s" [2 1 0.5]
+
+#Texture "mydiffuse" "color" "constant" "color value" [1.0 1.0 1.0]
+#Texture "mydiffuse" "spectrum" "imagemap" "string filename" "textures/lines.exr"
+Texture "facetex" "spectrum" "imagemap" "string filename" "textures/Face_Color.tga"
+Material "skindj" "float index" [1.4] "texture skintex" "facetex"
+
+Translate 0 -6.5 7
+#Translate 0.75 0.25 -2
+Scale 7 7 7
+Rotate 170 0 1 0
+Include "geometry/headscan3.pbrt"
+AttributeEnd
+
+WorldEnd

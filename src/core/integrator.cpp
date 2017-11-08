@@ -34,8 +34,17 @@
 #include "stdafx.h"
 #include "integrator.h"
 #include "scene.h"
+#include "renderers/surfacepoints.h"
 #include "intersection.h"
 #include "montecarlo.h"
+
+IrradiancePoint::IrradiancePoint(const SurfacePoint &sp, const Spectrum &ee) {
+  p = sp.p;
+  n = sp.n;
+  E = ee;
+  area = sp.area;
+  rayEpsilon = sp.rayEpsilon;
+}
 
 // Integrator Method Definitions
 Integrator::~Integrator() {

@@ -9,7 +9,6 @@
 #include <ImfRgbaFile.h>
 #include <half.h>
 #include <assert.h>
-#include <algorithm>
 
 using namespace Imf;
 using namespace Imath;

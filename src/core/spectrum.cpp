@@ -219,6 +219,20 @@ float InterpolateSpectrumSamples(const float *lambda, const float *vals,
     return 0.f;
 }
 
+Spectrum InterpolateSpectrumSamples(const float *lambda, const float *vals,
+				    int n, const Spectrum& l) {
+  Spectrum r;
+  const float *lband;
+  int sampleIndex = 0;
+  for (lband = l.nextSample(sampleIndex); lband; lband = l.nextSample(sampleIndex)) {
+    float *rband = r.nextSample(sampleIndex);
+    assert(rband);
+    *rband = InterpolateSpectrumSamples(lambda, vals, n, *lband);
+    ++sampleIndex;
+  }
+  return r;
+}
+
 
 const float CIE_X[nCIESamples] = {
     // CIE X function values

@@ -48,6 +48,17 @@
 #include "renderer.h"
 
 // Integrator Declarations
+struct IrradiancePoint;
+struct SurfacePoint;
+struct IrradiancePoint {
+    IrradiancePoint() { }
+    IrradiancePoint(const SurfacePoint &sp, const Spectrum &ee);
+    Point p;
+    Normal n;
+    Spectrum E;
+    float area, rayEpsilon;
+};
+
 class Integrator {
 public:
     // Integrator Interface

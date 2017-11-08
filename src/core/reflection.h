@@ -161,6 +161,10 @@ public:
     BSDF(const DifferentialGeometry &dgs, const Normal &ngeom,
          float eta = 1.f);
     inline void Add(BxDF *bxdf);
+    void Clear() {
+      nBxDFs = 0;
+      memset(bxdfs, 0, sizeof(bxdfs));
+    }
     int NumComponents() const { return nBxDFs; }
     int NumComponents(BxDFType flags) const;
     Vector WorldToLocal(const Vector &v) const {
@@ -176,6 +180,12 @@ public:
                  int sqrtSamples = 6) const;
     Spectrum rho(const Vector &wo, RNG &rng, BxDFType flags = BSDF_ALL,
                  int sqrtSamples = 6) const;
+
+    //HACK!
+    BxDF* getComponent(int i) {
+      assert (i < NumComponents());
+      return bxdfs[i];
+    }
 
     // BSDF Public Data
     const DifferentialGeometry dgShading;

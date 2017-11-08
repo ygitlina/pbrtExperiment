@@ -66,6 +66,8 @@ enum SpectrumType { SPECTRUM_REFLECTANCE, SPECTRUM_ILLUMINANT };
 extern void Blackbody(const float *wl, int n, float temp, float *vals);
 extern float InterpolateSpectrumSamples(const float *lambda, const float *vals,
                                         int n, float l);
+extern Spectrum InterpolateSpectrumSamples(const float *lambda, const float *vals,
+                                        int n, const Spectrum& l);
 
 // Spectral Data Declarations
 static const int nCIESamples = 471;
@@ -249,6 +251,20 @@ public:
         for (int i = 0; i < nSamples; ++i)
             if (fscanf(f, "%f ", &c[i]) != 1) return false;
         return true;
+    }
+
+    // *sigh* want some way of getting individual spectra.
+    float* nextSample(int sampleIndex) {
+      if (sampleIndex >= nSamples) {
+	return NULL;
+      }
+      return &c[sampleIndex];
+    }
+    const float* nextSample(int sampleIndex) const {
+      if (sampleIndex >= nSamples) {
+	return NULL;
+      }
+      return &c[sampleIndex];
     }
 protected:
     // CoefficientSpectrum Protected Data
